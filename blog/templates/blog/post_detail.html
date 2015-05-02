@@ -1,5 +1,36 @@
 {% extends "blog/layout.html" %}
 
+{% block extra_script %}
+<script>
+    $(function() {
+        $(".delete-confirm").click(function() {
+            var url = $(this).attr("href");
+            var target = $(this).parent().parent();
+
+            if ( confirm("삭제하시겠습니까?") ) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                }).done(function() {
+                    target.remove();
+                    $.toaster({
+                        priority: 'info',
+                        message: '댓글을 삭제했습니다.'
+                    });
+
+                }).fail(function() {
+                    $.toaster({
+                        priority: 'danger',
+                        message: '댓글 삭제 실패 ㅠ_ㅠ'
+                    });
+                });
+            }
+            return false;
+        });
+    });
+</script>
+{% endblock %}
+
 {% block content %}
     <p class="text-right">
         <a href="{% url "blog:post_edit" post.id %}" class="btn btn-info">수정</a>
@@ -36,7 +67,7 @@
                         {{ comment.message }}
                     </a>
                     at {{ comment.updated_at }}
-                    <a href="{% url "blog:comment_delete" post.id comment.id %}" class="text-danger">
+                    <a href="{% url "blog:comment_delete" post.id comment.id %}" class="text-danger delete-confirm">
                         삭제
                     </a>
                 </td>
