@@ -1,3 +1,16 @@
 blog/index.html
 
+<hr/>
+
+<table>
+    {% for post in post_list %}
+    <tr>
+        <td>{{ post.title }}</td>
+        <td>{{ post.updated_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<hr/>
+
 <a href="{% url "blog:post_new" %}">새 글</a>

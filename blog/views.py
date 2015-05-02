@@ -1,9 +1,12 @@
 from django.shortcuts import redirect, render
 from blog.forms import PostForm
+from blog.models import Post
 
 
 def index(request):
+    post_list = Post.objects.all()
     return render(request, 'blog/index.html', {
+        'post_list': post_list,
     })
 
 
