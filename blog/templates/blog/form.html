@@ -1,3 +1,15 @@
 blog/form.html
 
+<hr/>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="저장하기" />
+</form>
+
+<hr/>
+
 <a href="{% url "blog:index" %}">목록</a>
