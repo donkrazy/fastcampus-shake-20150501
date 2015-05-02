@@ -25,3 +25,11 @@ class Comment(models.Model):
     class Meta:
         ordering = ('-id',)
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'message': self.message,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
+
