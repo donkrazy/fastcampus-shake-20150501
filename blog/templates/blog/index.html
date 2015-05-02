@@ -1,20 +1,18 @@
-blog/index.html
+{% extends "blog/layout.html" %}
 
-<hr/>
+{% block content %}
+    <table class="table table-hover table-bordered">
+        {% for post in post_list %}
+        <tr>
+            <td>
+                <a href="{% url "blog:post_edit" post.id %}">
+                    {{ post.title }}
+                </a>
+            </td>
+            <td>{{ post.updated_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-<table>
-    {% for post in post_list %}
-    <tr>
-        <td>
-            <a href="{% url "blog:post_edit" post.id %}">
-                {{ post.title }}
-            </a>
-        </td>
-        <td>{{ post.updated_at }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<hr/>
-
-<a href="{% url "blog:post_new" %}">새 글</a>
+    <a href="{% url "blog:post_new" %}" class="btn btn-default">새 글</a>
+{% endblock %}
