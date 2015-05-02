@@ -32,7 +32,9 @@
             {% for comment in post.comment_set.all %}
             <tr>
                 <td>
-                    {{ comment.message }}
+                    <a href="{% url "blog:comment_edit" post.id comment.id %}">
+                        {{ comment.message }}
+                    </a>
                     at {{ comment.updated_at }}
                 </td>
             </tr>
