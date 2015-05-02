@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 from django.contrib import messages
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import PostForm, CommentForm
 from blog.models import Post, Comment
@@ -73,6 +76,16 @@ def comment_new(request, id):
             comment = form.save(commit=False)
             comment.post = post
             comment.save()
+            if request.is_ajax():
+                obj = {
+                    'id': comment.id,
+                    'message': comment.message,
+                    'created_at': comment.created_at,
+                    'updated_at': comment.updated_at,
+                }
+                json_string = json.dumps(obj, cls=DjangoJSONEncoder, ensure_ascii=False)
+                return HttpResponse(json_string, content_type='application/json')
+
             messages.info(request, '새 댓글을 저장했습니다.')
             return redirect('blog:post_detail', id)
     else:

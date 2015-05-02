@@ -4,6 +4,15 @@
 {% block extra_script %}
 <script>
     $(function() {
+        $("#comment_form").ajaxForm(function(comment) {
+            $("#comment_form")[0].reset();
+            $("#comment_list tbody").prepend($('<tr><td>' + comment.message + ' at ' + comment.updated_at + '</td></tr>'));
+            $.toaster({
+                priority: 'info',
+                message: '댓글을 등록했습니다.'
+            });
+        });
+
         $(".delete-confirm").click(function() {
             var url = $(this).attr("href");
             var target = $(this).parent().parent();
@@ -18,7 +27,6 @@
                         priority: 'info',
                         message: '댓글을 삭제했습니다.'
                     });
-
                 }).fail(function() {
                     $.toaster({
                         priority: 'danger',
@@ -69,7 +77,8 @@
                 {% endbuttons %}
             </form>
 
-            <table class="table table-hover">
+            <table id="comment_list" class="table table-hover">
+            <tbody>
             {% for comment in post.comment_set.all %}
             <tr>
                 <td>
@@ -82,8 +91,8 @@
                     </a>
                 </td>
             </tr>
-            {% empty %}
             {% endfor %}
+            </tbody>
             </table>
         </div>
     </div>
