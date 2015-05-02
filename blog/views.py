@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import PostForm, CommentForm
 from blog.models import Post, Comment
-from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -97,7 +96,6 @@ def comment_edit(request, id, comment_id):
     })
 
 
-@csrf_exempt
 def comment_delete(request, id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.method == 'POST':
