@@ -15,8 +15,10 @@ def index(request):
 
 def detail(request, id):
     post = get_object_or_404(Post, id=id)
+    comment_form = CommentForm()
     return render(request, 'blog/post_detail.html', {
         'post': post,
+        'comment_form': comment_form,
     })
 
 
