@@ -87,3 +87,13 @@ def comment_edit(request, id, comment_id):
         'form': form,
     })
 
+
+def comment_delete(request, id, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('blog:post_detail', id)
+    return render(request, 'blog/comment_delete_confirm.html', {
+        'comment': comment,
+    })
+

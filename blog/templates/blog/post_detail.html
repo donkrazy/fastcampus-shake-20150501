@@ -36,6 +36,9 @@
                         {{ comment.message }}
                     </a>
                     at {{ comment.updated_at }}
+                    <a href="{% url "blog:comment_delete" post.id comment.id %}" class="text-danger">
+                        삭제
+                    </a>
                 </td>
             </tr>
             {% empty %}

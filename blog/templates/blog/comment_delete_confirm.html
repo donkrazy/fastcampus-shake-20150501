@@ -1,0 +1,21 @@
+{% extends "blog/layout.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="alert alert-danger">
+        정말 삭제하시겠습니까? 낙장불입이오~!!!
+    </div>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% buttons %}
+            <button type="submit" class="btn btn-danger">
+                {% bootstrap_icon "ok-sign" %} 예. 후회없습니다. 정말 삭제하겠습니다.
+            </button>
+        {% endbuttons %}
+    </form>
+
+    <hr/>
+
+    <a href="{% url "blog:index" %}" class="btn btn-default">목록</a>
+{% endblock %}
