@@ -61,7 +61,9 @@ ROOT_URLCONF = 'shake.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'shake', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,4 +135,9 @@ LOGGING = {
         }
     },
 }
+
+
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy('login')  # default: /acconts/login/
+LOGIN_REDIRECT_URL = reverse_lazy('blog:index')  # default: /accounts/profile/
 
