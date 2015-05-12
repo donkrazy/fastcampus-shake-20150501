@@ -26,9 +26,6 @@ class PostCreateView(CreateView):
     model = Post
     form_class = PostForm
 
-    def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.id])
-
     def form_valid(self, form):
         response = super(PostCreateView, self).form_valid(form)
         messages.info(self.request, '새 포스팅을 저장했습니다.')
@@ -40,9 +37,6 @@ new = PostCreateView.as_view()
 class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
-
-    def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.id])
 
     def form_valid(self, form):
         response = super(PostUpdateView, self).form_valid(form)
