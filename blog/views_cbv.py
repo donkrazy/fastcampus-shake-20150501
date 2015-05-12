@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from blog.models import Post
+from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
 
 
@@ -86,10 +86,28 @@ class CommentCreateView(CreateView):
 
         messages.info(self.request, '새 댓글을 저장했습니다.')
 
-        # 아래 호출에서 form.save() 가 다시 호출됨. 이때 update 가 수행.
+        # 아래 호출에서도 form.save() 가 호출된다.
+        # 바뀐 내역은 없으나, 이때 update 가 수행된다.
         return super(CommentCreateView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('blog:post_detail', args=[self.object.id])
 
 comment_new = CommentCreateView.as_view()
+
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CommentForm
+    pk_url_kwarg = 'comment_id'
+    template_name = 'blog/form.html'
+
+    def get_success_url(self):
+        return reverse('blog:post_detail', args=[self.object.post.id])
+
+    def form_valid(self, form):
+        response = super(CommentUpdateView, self).form_valid(form)
+        messages.info(self.request, '댓글을 수정했습니다.')
+        return response
+
+comment_edit = CommentUpdateView.as_view()
