@@ -9,10 +9,9 @@ urlpatterns = patterns('blog.views_cbv',  # noqa
     url(r'^(?P<id>\d+)/comments/new/$', 'comment_new', name='comment_new'),
     url(r'^(?P<id>\d+)/comments/(?P<comment_id>\d+)/edit/$', 'comment_edit',
         name='comment_edit'),
-)
-
-urlpatterns += patterns('blog.views',  # noqa
     url(r'^(?P<id>\d+)/comments/(?P<comment_id>\d+)/delete/$', 'comment_delete',
         name='comment_delete'),
 )
 
+urlpatterns += patterns('blog.views',  # noqa
+)

@@ -74,6 +74,9 @@ delete = PostDeleteView.as_view()
 class CommentCreateView(CreateView):
     form_class = CommentForm
 
+    def get_success_url(self):
+        return reverse('blog:post_detail', args=[self.object.post.id])
+
     def form_valid(self, form):
         post = get_object_or_404(Post, id=self.kwargs['id'])
 
@@ -111,3 +114,19 @@ class CommentUpdateView(UpdateView):
         return response
 
 comment_edit = CommentUpdateView.as_view()
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    pk_url_kwarg = 'comment_id'
+    template_name = 'blog/comment_delete_confirm.html'
+
+    def get_success_url(self):
+        return reverse('blog:post_detail', args=[self.object.post.id])
+
+    def delete(self, request, *args, **kwargs):
+        response = super(CommentDeleteView, self).delete(request, *args, **kwargs)
+        messages.error(self.request, '댓글을 삭제했습니다.')
+        return response
+
+comment_delete = CommentDeleteView.as_view()
