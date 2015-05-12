@@ -1,6 +1,10 @@
 from django.conf.urls import patterns, url
 
-urlpatterns = patterns('blog.views',  # noqa
+urlpatterns = patterns('blog.views_cbv',  # noqa
+    url(r'^$', 'index', name='index'),
+)
+
+urlpatterns += patterns('blog.views',  # noqa
     url(r'^$', 'index', name='index'),
     url(r'^(?P<id>\d+)/$', 'detail', name='post_detail'),
     url(r'^new/$', 'new', name='post_new'),
