@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from blog.models import Post
 from blog.forms import PostForm, CommentForm
 
@@ -37,4 +37,21 @@ class PostCreateView(CreateView):
         return response
 
 new = PostCreateView.as_view()
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    pk_url_kwarg = 'id'
+    template_name = 'blog/form.html'
+
+    def get_success_url(self):
+        return reverse('blog:post_detail', args=[self.object.id])
+
+    def form_valid(self, form):
+        response = super(PostUpdateView, self).form_valid(form)
+        messages.info(self.request, '포스팅을 수정했습니다.')
+        return response
+
+edit = PostUpdateView.as_view()
 
