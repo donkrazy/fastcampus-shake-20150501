@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'djcelery',
     'debug_toolbar',
     'account',
     'blog',
@@ -142,3 +143,14 @@ from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login')  # default: /acconts/login/
 LOGIN_REDIRECT_URL = reverse_lazy('blog:index')  # default: /accounts/profile/
 
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = BROKER_URL
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_DEFAULT_RATE_LIMIT = '10/s'
+CELERYD_CONCURRENCY = 3
+
+import djcelery
+djcelery.setup_loader()
