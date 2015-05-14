@@ -81,7 +81,7 @@ class CommentCreateView(CreateView):
         return super(CommentCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.id])
+        return reverse('blog:post_detail', args=[self.object.post.id])
 
 comment_new = CommentCreateView.as_view()
 
