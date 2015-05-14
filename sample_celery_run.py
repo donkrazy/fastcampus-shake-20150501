@@ -5,10 +5,10 @@ from __future__ import unicode_literals
 이에 앞서 2가지 작업이 필요하다.
 
 1) celery worker 실행
-    shell> python manage.py celery worker --events
+    shell> celery worker --app shake --events
 
 2) events monitor 실행
-    shell> python manage.py events
+    shell> celery events --app shake
 '''
 
 import os

@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'djcelery',
     'debug_toolbar',
     'account',
     'blog',
@@ -152,5 +151,3 @@ CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_DEFAULT_RATE_LIMIT = '10/s'
 CELERYD_CONCURRENCY = 3
 
-import djcelery
-djcelery.setup_loader()
