@@ -1,11 +1,11 @@
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
-from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
+from blog.mixins import FormValidMessageMixin
 
 
 index = ListView.as_view(model=Post)
@@ -22,44 +22,33 @@ class PostDetailView(DetailView):
 detail = PostDetailView.as_view()
 
 
-class PostCreateView(CreateView):
+class PostCreateView(FormValidMessageMixin, CreateView):
     model = Post
     form_class = PostForm
-
-    def form_valid(self, form):
-        response = super(PostCreateView, self).form_valid(form)
-        messages.info(self.request, '새 포스팅을 저장했습니다.')
-        return response
+    form_valid_message = '새 포스팅을 저장했습니다.'
 
 new = PostCreateView.as_view()
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(FormValidMessageMixin, UpdateView):
     model = Post
     form_class = PostForm
-
-    def form_valid(self, form):
-        response = super(PostUpdateView, self).form_valid(form)
-        messages.info(self.request, '포스팅을 수정했습니다.')
-        return response
+    form_valid_message = '포스팅을 수정했습니다.'
 
 edit = PostUpdateView.as_view()
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(FormValidMessageMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:index')
-
-    def delete(self, request, *args, **kwargs):
-        response = super(PostDeleteView, self).delete(request, *args, **kwargs)
-        messages.error(self.request, '포스팅을 삭제했습니다.')
-        return response
+    form_valid_message = '포스팅을 삭제했습니다.'
 
 delete = PostDeleteView.as_view()
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(FormValidMessageMixin, CreateView):
     form_class = CommentForm
+    form_valid_message = '새 댓글을 저장했습니다.'
 
     def get_success_url(self):
         return reverse('blog:post_detail', args=[self.object.post.id])
@@ -74,8 +63,6 @@ class CommentCreateView(CreateView):
         if self.request.is_ajax():
             return self.object
 
-        messages.info(self.request, '새 댓글을 저장했습니다.')
-
         # 아래 호출에서도 form.save() 가 호출된다.
         # 바뀐 내역은 없으나, 이때 update 가 수행된다.
         return super(CommentCreateView, self).form_valid(form)
@@ -86,30 +73,22 @@ class CommentCreateView(CreateView):
 comment_new = CommentCreateView.as_view()
 
 
-class CommentUpdateView(UpdateView):
+class CommentUpdateView(FormValidMessageMixin, UpdateView):
     model = Comment
     form_class = CommentForm
+    form_valid_message = '댓글을 수정했습니다.'
 
     def get_success_url(self):
         return reverse('blog:post_detail', args=[self.object.post.id])
-
-    def form_valid(self, form):
-        response = super(CommentUpdateView, self).form_valid(form)
-        messages.info(self.request, '댓글을 수정했습니다.')
-        return response
 
 comment_edit = CommentUpdateView.as_view()
 
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(FormValidMessageMixin, DeleteView):
     model = Comment
+    form_valid_message = '댓글을 삭제했습니다.'
 
     def get_success_url(self):
         return reverse('blog:post_detail', args=[self.object.post.id])
-
-    def delete(self, request, *args, **kwargs):
-        response = super(CommentDeleteView, self).delete(request, *args, **kwargs)
-        messages.error(self.request, '댓글을 삭제했습니다.')
-        return response
 
 comment_delete = CommentDeleteView.as_view()
