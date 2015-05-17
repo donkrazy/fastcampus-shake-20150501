@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -7,6 +9,11 @@ from django.utils.encoding import python_2_unicode_compatible
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
+
+    # django gis모듈에서는 "경도,위도" 순서로 저장하므로,
+    # 차후 호환성을 위해 "경도/위도" 순으로 저장토록 한다.
+    lnglat = models.CharField(max_length=50, default='')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,6 +25,16 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:post_detail', args=[self.id])
+
+    @property
+    def lat(self):
+        if self.lnglat:
+            return self.lnglat.split(',')[1]
+
+    @property
+    def lng(self):
+        if self.lnglat:
+            return self.lnglat.split(',')[0]
 
 
 class Comment(models.Model):
