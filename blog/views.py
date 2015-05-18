@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import PostForm, CommentForm
 from blog.models import Post, Comment
@@ -22,9 +23,10 @@ def detail(request, pk):
     })
 
 
+@login_required
 def new(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, author=request.user)
         if form.is_valid():
             post = form.save()
             messages.info(request, '새 포스팅을 저장했습니다.')
@@ -36,6 +38,7 @@ def new(request):
     })
 
 
+@login_required
 def edit(request, pk):
     post = get_object_or_404(Post, id=pk)
 
