@@ -60,7 +60,7 @@ class CommentCreateView(FormValidMessageMixin, CreateView):
         return reverse('blog:post_detail', args=[self.object.post.id])
 
     def form_valid(self, form):
-        post = get_object_or_404(Post, id=self.kwargs['id'])
+        post = get_object_or_404(Post, id=self.kwargs['post_id'])
 
         self.object = form.save(commit=False)
         self.object.post = post
@@ -72,9 +72,6 @@ class CommentCreateView(FormValidMessageMixin, CreateView):
         # 아래 호출에서도 form.save() 가 호출된다.
         # 바뀐 내역은 없으나, 이때 update 가 수행된다.
         return super(CommentCreateView, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.post.id])
 
 comment_new = CommentCreateView.as_view()
 

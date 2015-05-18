@@ -64,8 +64,8 @@ def delete(request, pk):
     })
 
 
-def comment_new(request, id):
-    post = get_object_or_404(Post, id=id)
+def comment_new(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -76,7 +76,7 @@ def comment_new(request, id):
             if request.is_ajax():
                 return comment
             messages.info(request, '새 댓글을 저장했습니다.')
-            return redirect('blog:post_detail', id)
+            return redirect('blog:post_detail', post_id)
     else:
         form = CommentForm()
 
@@ -85,14 +85,14 @@ def comment_new(request, id):
     })
 
 
-def comment_edit(request, id, pk):
+def comment_edit(request, post_id, pk):
     comment = get_object_or_404(Comment, id=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
             messages.info(request, '댓글을 수정했습니다.')
-            return redirect('blog:post_detail', id)
+            return redirect('blog:post_detail', post_id)
     else:
         form = CommentForm(instance=comment)
     return render(request, 'blog/form.html', {
@@ -100,12 +100,12 @@ def comment_edit(request, id, pk):
     })
 
 
-def comment_delete(request, id, pk):
+def comment_delete(request, post_id, pk):
     comment = get_object_or_404(Comment, id=pk)
     if request.method == 'POST':
         comment.delete()
         messages.error(request, '댓글을 삭제했습니다.')
-        return redirect('blog:post_detail', id)
+        return redirect('blog:post_detail', post_id)
     return render(request, 'blog/comment_confirm_delete.html', {
         'comment': comment,
     })
