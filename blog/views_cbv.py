@@ -62,7 +62,7 @@ class CommentCreateView(FormValidMessageMixin, CreateView):
     form_valid_message = '새 댓글을 저장했습니다.'
 
     def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.post.id])
+        return reverse(self.object.post.get_absolute_url())
 
     def form_valid(self, form):
         post = get_object_or_404(Post, id=self.kwargs['post_id'])
@@ -87,7 +87,7 @@ class CommentUpdateView(FormValidMessageMixin, UpdateView):
     form_valid_message = '댓글을 수정했습니다.'
 
     def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.post.id])
+        return reverse(self.object.post.get_absolute_url())
 
 comment_edit = CommentUpdateView.as_view()
 
@@ -97,7 +97,7 @@ class CommentDeleteView(FormValidMessageMixin, DeleteView):
     form_valid_message = '댓글을 삭제했습니다.'
 
     def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.object.post.id])
+        return reverse(self.object.post.get_absolute_url())
 
 comment_delete = CommentDeleteView.as_view()
 

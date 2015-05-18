@@ -30,7 +30,7 @@ def new(request):
         if form.is_valid():
             post = form.save()
             messages.info(request, '새 포스팅을 저장했습니다.')
-            return redirect('blog:post_detail', post.id)
+            return redirect(post.get_absolute_url())
     else:
         form = PostForm()
     return render(request, 'blog/form.html', {
@@ -47,7 +47,7 @@ def edit(request, pk):
         if form.is_valid():
             post = form.save()
             messages.info(request, '포스팅을 수정했습니다.')
-            return redirect('blog:post_detail', post.id)
+            return redirect(post.get_absolute_url())
     else:
         form = PostForm(instance=post)
 
@@ -79,7 +79,7 @@ def comment_new(request, post_id):
             if request.is_ajax():
                 return comment
             messages.info(request, '새 댓글을 저장했습니다.')
-            return redirect('blog:post_detail', post_id)
+            return redirect(post.get_absolute_url())
     else:
         form = CommentForm()
 
@@ -93,9 +93,9 @@ def comment_edit(request, post_id, pk):
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
-            form.save()
+            post = form.save()
             messages.info(request, '댓글을 수정했습니다.')
-            return redirect('blog:post_detail', post_id)
+            return redirect(post.get_absolute_url())
     else:
         form = CommentForm(instance=comment)
     return render(request, 'blog/form.html', {
@@ -108,7 +108,7 @@ def comment_delete(request, post_id, pk):
     if request.method == 'POST':
         comment.delete()
         messages.error(request, '댓글을 삭제했습니다.')
-        return redirect('blog:post_detail', post_id)
+        return redirect(comment.post.get_absolute_url())
     return render(request, 'blog/comment_confirm_delete.html', {
         'comment': comment,
     })
