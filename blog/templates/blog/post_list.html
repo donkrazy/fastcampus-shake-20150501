@@ -15,6 +15,10 @@
             </td>
             <td>{{ post.updated_at }}</td>
         </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">등록된 포스팅이 없습니다.</td>
+        </tr>
         {% endfor %}
     </table>
 
