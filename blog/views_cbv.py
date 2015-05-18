@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -27,7 +28,12 @@ class PostCreateView(FormValidMessageMixin, CreateView):
     form_class = PostForm
     form_valid_message = '새 포스팅을 저장했습니다.'
 
-new = PostCreateView.as_view()
+    def get_form_kwargs(self):
+        kwargs = super(PostCreateView, self).get_form_kwargs()
+        kwargs['author'] = self.request.user
+        return kwargs
+
+new = login_required(PostCreateView.as_view())
 
 
 class PostUpdateView(FormValidMessageMixin, UpdateView):
@@ -35,7 +41,7 @@ class PostUpdateView(FormValidMessageMixin, UpdateView):
     form_class = PostForm
     form_valid_message = '포스팅을 수정했습니다.'
 
-edit = PostUpdateView.as_view()
+edit = login_required(PostUpdateView.as_view())
 
 
 class PostDeleteView(FormValidMessageMixin, DeleteView):
