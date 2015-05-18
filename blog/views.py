@@ -8,13 +8,13 @@ from blog.models import Post, Comment
 
 def index(request):
     post_list = Post.objects.all()
-    return render(request, 'blog/index.html', {
+    return render(request, 'blog/post_list.html', {
         'post_list': post_list,
     })
 
 
-def detail(request, id):
-    post = get_object_or_404(Post, id=id)
+def detail(request, pk):
+    post = get_object_or_404(Post, id=pk)
     comment_form = CommentForm()
     return render(request, 'blog/post_detail.html', {
         'post': post,
@@ -36,8 +36,8 @@ def new(request):
     })
 
 
-def edit(request, id):
-    post = get_object_or_404(Post, id=id)
+def edit(request, pk):
+    post = get_object_or_404(Post, id=pk)
 
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -53,13 +53,13 @@ def edit(request, id):
     })
 
 
-def delete(request, id):
-    post = get_object_or_404(Post, id=id)
+def delete(request, pk):
+    post = get_object_or_404(Post, id=pk)
     if request.method == 'POST':
         post.delete()
         messages.error(request, '포스팅을 삭제했습니다.')
         return redirect('blog:index')
-    return render(request, 'blog/post_delete_confirm.html', {
+    return render(request, 'blog/post_confirm_delete.html', {
         'post': post,
     })
 
@@ -85,8 +85,8 @@ def comment_new(request, id):
     })
 
 
-def comment_edit(request, id, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
+def comment_edit(request, id, pk):
+    comment = get_object_or_404(Comment, id=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -100,13 +100,13 @@ def comment_edit(request, id, comment_id):
     })
 
 
-def comment_delete(request, id, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
+def comment_delete(request, id, pk):
+    comment = get_object_or_404(Comment, id=pk)
     if request.method == 'POST':
         comment.delete()
         messages.error(request, '댓글을 삭제했습니다.')
         return redirect('blog:post_detail', id)
-    return render(request, 'blog/comment_delete_confirm.html', {
+    return render(request, 'blog/comment_confirm_delete.html', {
         'comment': comment,
     })
 
