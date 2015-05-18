@@ -11,9 +11,12 @@
 </style>
 <script>
     $(function() {
+        var datetime_format = django.get_format('DATETIME_FORMAT');
+
         $("#comment_form").ajaxForm(function(comment) {
+            var updated_at = new Date(comment.updated_at).format(datetime_format);
             $("#comment_form")[0].reset();
-            $("#comment_list tbody").prepend($('<tr><td>' + comment.message + ' at ' + comment.updated_at + '</td></tr>'));
+            $("#comment_list tbody").prepend($('<tr><td>' + comment.message + ' at ' + updated_at + '</td></tr>'));
             $.toaster({
                 priority: 'info',
                 message: '댓글을 등록했습니다.'
