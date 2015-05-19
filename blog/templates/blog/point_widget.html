@@ -13,6 +13,12 @@
 
 <script>
 (function($) {
+    var update_field = function(position) {
+        var lnglat = position.lng() + "," + position.lat();
+        console.log(lnglat);
+        $("#{{ id }}").val(lnglat);
+    };
+
     $(document).ready(function() {
         var map_dom_element = $("#map_canvas_{{ id }}")[0];
         var center = new google.maps.LatLng({{ base_lat }}, {{ base_lng }});
@@ -25,11 +31,12 @@
             map: map,
             position: center
         });
+
+        update_field(center);
+
         google.maps.event.addListener(map, "click", function(e) {
             marker.setPosition(e.latLng);
-            var lnglat = e.latLng.lng() + "," + e.latLng.lat();
-            console.log(lnglat);
-            $("#{{ id }}").val(lnglat);
+            update_field(e.latLng);
         });
     });
 })(jQuery);
