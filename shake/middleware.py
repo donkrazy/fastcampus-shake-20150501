@@ -2,6 +2,7 @@ import json
 from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, QueryDict
+from django.utils import six
 from .encoder import DjangoJSONEncoder
 
 
@@ -15,7 +16,7 @@ class PutMethodMiddleware(object):
 
 class JsonResponseMiddleware(object):
     def process_response(self, request, response):
-        if isinstance(response, basestring):
+        if isinstance(response, six.string_types):
             if response and response[0] in ('"', '[', '{'):
                 return HttpResponse(response, content_type='application/json')
             return HttpResponse(response)
