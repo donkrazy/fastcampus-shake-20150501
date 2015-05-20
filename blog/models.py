@@ -9,32 +9,20 @@ from django.utils.encoding import python_2_unicode_compatible
 from blog.signals import app_ready
 
 
-def author_is_follow(from_user, to_user):
-    if from_user.is_authenticated() and to_user.is_authenticated():
-        return from_user.following_set.filter(to_user=to_user).exists()
-    return False
-
-
-def author_follow(from_user, to_user):
-    if not author_is_follow(from_user, to_user):
-        from_user.following_set.create(to_user=to_user)
-
-
-def author_unfollow(from_user, to_user):
-    from_user.following_set.filter(to_user=to_user).delete()
-
-
 def on_app_ready(sender, **kwargs):
     def is_follow(self, to_user):
-        return author_is_follow(self, to_user)
+        if self.is_authenticated() and to_user.is_authenticated():
+            return self.following_set.filter(to_user=to_user).exists()
+        return False
     setattr(get_user_model(), 'is_follow', is_follow)
 
     def follow(self, to_user):
-        author_follow(self, to_user)
+        if not self.is_follow(to_user):
+            self.following_set.create(to_user=to_user)
     setattr(get_user_model(), 'follow', follow)
 
     def unfollow(self, to_user):
-        author_unfollow(self, to_user)
+        self.following_set.filter(to_user=to_user).delete()
     setattr(get_user_model(), 'unfollow', unfollow)
 
     setattr(AnonymousUser, 'is_follow', lambda *args: False)

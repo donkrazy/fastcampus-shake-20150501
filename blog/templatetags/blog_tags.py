@@ -1,5 +1,4 @@
 from django import template
-from blog.models import author_is_follow
 
 register = template.Library()
 
