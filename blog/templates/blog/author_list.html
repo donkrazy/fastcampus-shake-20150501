@@ -1,24 +1,47 @@
 {% extends "blog/layout.html" %}
 
 {% block content %}
-    <table class="table table-hover table-bordered">
-        <thead>
-        <tr>
-            <th>블로거</th>
-            <th>가입일시</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in author_list %}
-        <tr>
-            <td>
-                <a href="{% url "blog:author_home" user.username %}">
-                    {{ user }}
-                </a>
-            </td>
-            <td>{{ user.date_joined }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+    <div class="row">
+        <div class="col-sm-4">
+            나의 추종자들
+            <ul>
+                {% for follow in user.follower_set.all %}
+                    <li>
+                        <a href="{% url "blog:author_home" follow.from_user.username %}">
+                            {{ follow.from_user }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>팔로워 하나 없는, 무명의 블로거</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            내가 지켜보고 있는 블로거들
+            <ul>
+                {% for follow in user.following_set.all %}
+                    <li>
+                        <a href="{% url "blog:author_home" follow.to_user.username %}">
+                            {{ follow.to_user }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>empty</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            모든 블로거
+            <ul>
+                {% for user in author_list %}
+                    <li>
+                        <a href="{% url "blog:author_home" user.username %}">
+                            {{ user }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

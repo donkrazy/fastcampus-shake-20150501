@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import PostForm, CommentForm
@@ -113,3 +114,21 @@ def comment_delete(request, post_id, pk):
         'comment': comment,
     })
 
+
+@login_required
+def author_follow(request, username):
+    author = get_object_or_404(get_user_model(), username=username)
+    if not author.follower_set.filter(from_user=request.user).exists():
+        messages.info(request, '팔로우했습니다.')
+        author.follower_set.create(from_user=request.user)
+    else:
+        messages.warning(request, '이미 팔로우 상태!')
+    return redirect('blog:author_home', username)
+
+
+@login_required
+def author_unfollow(request, username):
+    author = get_object_or_404(get_user_model(), username=username)
+    author.follower_set.filter(from_user=request.user).delete()
+    messages.info(request, '언팔했습니다.')
+    return redirect('blog:author_home', username)

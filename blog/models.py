@@ -6,6 +6,17 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 
+class UserFollow(models.Model):
+    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='following_set')
+    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='follower_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('from_user', 'to_user'),
+        )
+
+
 @python_2_unicode_compatible
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
