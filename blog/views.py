@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from blog.forms import PostForm, CommentForm
-from blog.models import Post, Comment, author_follow, author_unfollow
+from blog.models import Post, Comment
 
 
 def index(request):
@@ -118,7 +118,7 @@ def comment_delete(request, post_id, pk):
 @login_required
 def follow(request, username):
     author = get_object_or_404(get_user_model(), username=username)
-    author_follow(request.user, author)
+    request.user.follow(author)
     messages.info(request, '팔로우했습니다.')
     return redirect('blog:author_home', username)
 
@@ -126,6 +126,6 @@ def follow(request, username):
 @login_required
 def unfollow(request, username):
     author = get_object_or_404(get_user_model(), username=username)
-    author_unfollow(request.user, author)
+    request.user.unfollow(author)
     messages.info(request, '언팔했습니다.')
     return redirect('blog:author_home', username)

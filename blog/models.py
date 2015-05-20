@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from blog.signals import app_ready
 
 
 def author_is_follow(from_user, to_user):
@@ -19,6 +22,26 @@ def author_follow(from_user, to_user):
 
 def author_unfollow(from_user, to_user):
     from_user.following_set.filter(to_user=to_user).delete()
+
+
+def on_app_ready(sender, **kwargs):
+    def is_follow(self, to_user):
+        return author_is_follow(self, to_user)
+    setattr(get_user_model(), 'is_follow', is_follow)
+
+    def follow(self, to_user):
+        author_follow(self, to_user)
+    setattr(get_user_model(), 'follow', follow)
+
+    def unfollow(self, to_user):
+        author_unfollow(self, to_user)
+    setattr(get_user_model(), 'unfollow', unfollow)
+
+    setattr(AnonymousUser, 'is_follow', lambda *args: False)
+    setattr(AnonymousUser, 'follow', lambda *args: None)
+    setattr(AnonymousUser, 'unfollow', lambda *args: None)
+
+app_ready.connect(on_app_ready)
 
 
 class UserFollow(models.Model):
