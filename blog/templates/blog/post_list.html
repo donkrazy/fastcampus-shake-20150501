@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url "blog:author_follow" author.username %}">팔로우</a></li>
-    <li><a href="{% url "blog:author_unfollow" author.username %}">언팔</a></li>
+    {% if not is_following %}
+        <li><a href="{% url "blog:author_follow" author.username %}">팔로우</a></li>
+    {% else %}
+        <li><a href="{% url "blog:author_unfollow" author.username %}">언팔</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-
     Followers
     <ul>
     {% for follow in author.follower_set.all %}
