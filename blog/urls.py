@@ -14,9 +14,9 @@ urlpatterns = patterns('blog.views_cbv',  # noqa
     url(r'^(?P<post_id>\d+)/comments/(?P<pk>\d+)/delete/$', 'comment_delete',
         name='comment_delete'),
     url('^' + username_pattern + '/$', 'author_home', name='author_home'),
+    url('^' + username_pattern + '/follow/$', 'follow', name='author_follow'),
+    url('^' + username_pattern + '/unfollow/$', 'unfollow', name='author_unfollow'),
 )
 
 urlpatterns += patterns('blog.views',  # noqa
-    url('^' + username_pattern + '/follow/$', 'follow', name='author_follow'),
-    url('^' + username_pattern + '/unfollow/$', 'unfollow', name='author_unfollow'),
 )
