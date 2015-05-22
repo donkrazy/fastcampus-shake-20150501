@@ -1,0 +1,23 @@
+{% extends "blog/form.html" %}
+{% load bootstrap3 socialaccount %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            {% if socialaccount.providers  %}
+                <div>
+                    {% for provider in socialaccount.providers %}
+                        <a title="{{provider.name}}" class="btn btn-social btn-{{ provider.id }} {% if provider.id == "google" %}btn-google-plus{% endif %} {{ provider.id }}" href="{% provider_login_url       provider.id process="login" scope=scope auth_params=auth_params %}">
+                            <span class="btn btn-info">{{ provider.name }} 계정으로 로그인</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% include "socialaccount/snippets/login_extra.html" %}
+            {% else %}
+                <p>로그인을 준비하고 있습니다.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {{ block.super }}
+{% endblock %}
