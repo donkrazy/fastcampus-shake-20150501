@@ -19,6 +19,7 @@
         </div>
         <div class="col-sm-4">
             내가 지켜보고 있는 블로거들
+            <p><small>{{ user.following_summary }}</small></p>
             <ul>
                 {% for follow in user.following_set.all %}
                     <li>

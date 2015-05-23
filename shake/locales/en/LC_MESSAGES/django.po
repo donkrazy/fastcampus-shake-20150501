@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-23 01:45+0000\n"
+"POT-Creation-Date: 2015-05-23 05:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: blog/models.py:49
+#: blog/models.py:32
+#, python-format
+msgid "%(count)d post (single)"
+msgid_plural "%(count)d posts (plural)"
+msgstr[0] "%(count)d post"
+msgstr[1] "%(count)d posts"
+
+#: blog/models.py:57
 msgid "author"
 msgstr ""
 
-#: blog/models.py:50
+#: blog/models.py:58
 msgid "title"
 msgstr ""
 
-#: blog/models.py:51
+#: blog/models.py:59
 msgid "content"
 msgstr ""
 
-#: blog/models.py:55
+#: blog/models.py:63
 msgid "lnglat"
 msgstr ""
 
-#: blog/models.py:82
+#: blog/models.py:70
+msgid "post"
+msgstr ""
+
+#: blog/models.py:71
+msgid "posts"
+msgstr ""
+
+#: blog/models.py:92
 msgid "message"
+msgstr ""
+
+#: blog/models.py:98
+msgid "comment"
+msgstr ""
+
+#: blog/models.py:99
+msgid "comments"
 msgstr ""

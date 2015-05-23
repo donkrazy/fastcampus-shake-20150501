@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext
 from blog.signals import app_ready
 
 
@@ -25,6 +26,13 @@ def on_app_ready(sender, **kwargs):
     def unfollow(self, to_user):
         self.following_set.filter(to_user=to_user).delete()
     setattr(get_user_model(), 'unfollow', unfollow)
+
+    def following_summary(self):
+        count = self.following_set.all().count()
+        return ungettext('%(count)d post (single)', '%(count)d posts (plural)', count) % {
+            'count': count,
+        }
+    setattr(get_user_model(), 'following_summary', following_summary)
 
     setattr(AnonymousUser, 'is_follow', lambda *args: False)
     setattr(AnonymousUser, 'follow', lambda *args: None)
