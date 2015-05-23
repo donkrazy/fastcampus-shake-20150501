@@ -64,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'shake.middleware.JsonResponseMiddleware',  # 필히 제일 뒤에 위치
 )
 
@@ -112,7 +113,14 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'shake', 'locales'),
+)
 LANGUAGE_CODE = 'en-us'
+LANGUAGES = (
+    ('en', 'English'),
+    ('ko', 'Korean'),
+)
 
 TIME_ZONE = 'UTC'
 

@@ -6,6 +6,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
 from blog.signals import app_ready
 
 
@@ -45,13 +46,13 @@ class UserFollow(models.Model):
 
 @python_2_unicode_compatible
 class Post(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('author'))
+    title = models.CharField(max_length=100, verbose_name=_('title'))
+    content = models.TextField(verbose_name=_('content'))
 
     # django gis모듈에서는 "경도,위도" 순서로 저장하므로,
     # 차후 호환성을 위해 "경도/위도" 순으로 저장토록 한다.
-    lnglat = models.CharField(max_length=50, default='')
+    lnglat = models.CharField(max_length=50, default='', verbose_name=_('lnglat'))
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -78,7 +79,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
-    message = models.TextField()
+    message = models.TextField(verbose_name=_('message'))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
