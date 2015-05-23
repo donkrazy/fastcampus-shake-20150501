@@ -59,6 +59,8 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-id',)
+        verbose_name = _('post')
+        verbose_name_plural = _('posts')
 
     def __str__(self):
         return self.title
@@ -85,6 +87,8 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('-id',)
+        verbose_name = _('comment')
+        verbose_name_plural = _('comments')
 
     def as_dict(self):
         return {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-23 01:45+0000\n"
+"POT-Creation-Date: 2015-05-23 02:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,22 @@ msgstr "내용"
 msgid "lnglat"
 msgstr "위도/경도"
 
-#: blog/models.py:82
+#: blog/models.py:62
+msgid "post"
+msgstr "글"
+
+#: blog/models.py:63
+msgid "posts"
+msgstr "글목록"
+
+#: blog/models.py:84
 msgid "message"
 msgstr "메세지"
+
+#: blog/models.py:90
+msgid "comment"
+msgstr "댓글"
+
+#: blog/models.py:91
+msgid "comments"
+msgstr "댓글목록"
