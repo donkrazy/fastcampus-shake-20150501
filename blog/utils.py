@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import os
 import uuid
 try:
-    from io import BytesIO as StringIO # python 3
+    from io import BytesIO as StringIO  # python 3
 except ImportError:
     from StringIO import StringIO  # python 2
 from PIL import Image, ImageOps
@@ -33,7 +33,7 @@ def pil_image(input_f, quality=80):
     try:
         format = {
             '.jpg': 'jpeg',
-            '.jepg': 'jpeg',
+            '.jpeg': 'jpeg',
             '.png': 'png',
             '.gif': 'gif',
         }[extension]
