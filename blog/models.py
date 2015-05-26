@@ -61,6 +61,7 @@ class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('author'))
     title = models.CharField(max_length=100, verbose_name=_('title'))
     content = models.TextField(verbose_name=_('content'))
+    jjal = models.ImageField(blank=True, default='', verbose_name='짤')
 
     # django gis모듈에서는 "경도,위도" 순서로 저장하므로,
     # 차후 호환성을 위해 "경도/위도" 순으로 저장토록 한다.

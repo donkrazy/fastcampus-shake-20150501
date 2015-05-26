@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import RedirectView
@@ -21,3 +22,14 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', name='jsi18n'),
 ]
+
+
+if settings.DEBUG and settings.MEDIA_URL.startswith('/'):
+    media_url = settings.MEDIA_URL.strip('/')               # '/media/' -> 'media'
+    media_url_pattern = '^' + media_url + '/(?P<path>.*)$'  # '^media/(?P<path>.*)$'
+    urlpatterns += [
+        url(media_url_pattern, 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
+

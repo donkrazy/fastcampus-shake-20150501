@@ -3,6 +3,12 @@
 
 {% block extra_script %}
 <style>
+    .post_jjal {
+        text-align: center;
+    }
+    .post_jjal img {
+        max-width: 100%;  /* 화면크기가 작아져도, 이미지가 레이아웃을 벗어나지 않도록 함. */
+    }
     .post_thumbnail_map {
         float: left;
         margin-right: 10px;
@@ -66,6 +72,12 @@
             {{ post.title }}
         </div>
         <div class="panel-body">
+            <p class="post_jjal">
+                {% if post.jjal %}
+                    <img src="{{ post.jjal.url }}" />
+                {% endif %}
+            </p>
+
             {% if post.lnglat %}
                 <img class="post_thumbnail_map" src="http://maps.googleapis.com/maps/api/staticmap?center={{ post.lat }},{{ post.lng }}&zoom=11&size=150x150&markers=color:red%7Clabel:A%7C{{ post.lat }},{{ post.lng }}" />
             {% endif %}
