@@ -2,7 +2,12 @@
 from __future__ import unicode_literals
 import os
 import uuid
-from django.utils import timezone
+try:
+    from io import BytesIO as StringIO # python 3
+except ImportError:
+    from StringIO import StringIO  # python 2
+from PIL import Image
+from django.utils import six, timezone
 from django.utils.encoding import force_text, smart_text
 
 
@@ -14,4 +19,32 @@ def random_name_upload_to(model_instance, filename):
     random_name = uuid.uuid4().hex
     extension = os.path.splitext(filename)[-1].lower()
     return dirpath + '/' + random_name + extension
+
+
+def thumbnail(input_f, width, height, quality=80):
+    if isinstance(input_f, six.string_types):
+        filename = input_f
+    elif hasattr(input_f, 'name'):
+        filename = input_f.name
+    else:
+        filename = 'noname.png'
+
+    extension = os.path.splitext(filename)[-1].lower()
+    try:
+        format = {
+            '.jpg': 'jpeg',
+            '.jepg': 'jpeg',
+            '.png': 'png',
+            '.gif': 'gif',
+        }[extension]
+    except KeyError:
+        format = 'png'
+
+    image = Image.open(input_f)
+    image.thumbnail((width, height), Image.ANTIALIAS)
+    output_f = StringIO()
+    image.save(output_f, format=format, quality=quality)
+    output_f.seek(0)
+
+    return output_f
 

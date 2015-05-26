@@ -5,3 +5,4 @@ redis>=2.10.3
 # hiredis # Mac/Linux 에서 사용가능
 celery>=3.1.18
 django-allauth>=0.19.1
+Pillow>=2.8.1

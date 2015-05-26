@@ -1,6 +1,7 @@
 from django import forms
 from blog.models import Post, Comment
 from blog.widgets import PointWidget
+from blog.utils import thumbnail
 
 
 class PostForm(forms.ModelForm):
@@ -14,6 +15,12 @@ class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.author = kwargs.pop('author', None)
         super(PostForm, self).__init__(*args, **kwargs)
+
+    def clean_jjal(self):
+        jjal = self.cleaned_data['jjal']  # ImageFieldFile instance
+        if jjal:
+            jjal.file = thumbnail(jjal.file, 400, 400)
+        return jjal
 
     def save(self, commit=True):
         post = super(PostForm, self).save(commit=False)
