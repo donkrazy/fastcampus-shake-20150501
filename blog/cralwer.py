@@ -40,8 +40,6 @@ class ClienNews(object):
         clien_news_url = "http://www.clien.net/cs2/bbs/board.php?bo_table=news&page={}".format(page)
         soup = cls.get_page_soup(clien_news_url)
 
-        clien_news_list = []
-
         # for tr_tag in soup.select('.board_main tbody .mytr'):  # 이와 같이 하고 싶었으나, 마크업이 꼬여있어서 못함 ㅠ_ㅠ
         for tr_tag in soup.select('.mytr'):
             try:
@@ -54,12 +52,10 @@ class ClienNews(object):
 
             clien_news = ClienNews(name, url)
             clien_news.update_content()
-            clien_news_list.append(clien_news)
+            yield clien_news
 
             # break
             sleep(0.1)  # 서버에 부하를 적게 주기 위해서, 임의시간으로 딜레이를 줍니다.
-
-        return clien_news_list
 
 
 if __name__ == '__main__':
