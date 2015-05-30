@@ -1,0 +1,11 @@
+.post_jjal {
+    text-align: center;
+}
+.post_jjal img {
+    max-width: 100%;  /* 화면크기가 작아져도, 이미지가 레이아웃을 벗어나지 않도록 함. */
+}
+.post_thumbnail_map {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

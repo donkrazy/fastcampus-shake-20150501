@@ -1,59 +1,9 @@
 {% extends "blog/layout.html" %}
-{% load bootstrap3 blog_tags %}
+{% load bootstrap3 blog_tags staticfiles %}
 
 {% block extra_script %}
-<style>
-    .post_jjal {
-        text-align: center;
-    }
-    .post_jjal img {
-        max-width: 100%;  /* 화면크기가 작아져도, 이미지가 레이아웃을 벗어나지 않도록 함. */
-    }
-    .post_thumbnail_map {
-        float: left;
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-</style>
-<script>
-    $(function() {
-        var datetime_format = django.get_format('DATETIME_FORMAT');
-
-        $("#comment_form").ajaxForm(function(comment) {
-            var updated_at = new Date(comment.updated_at).format(datetime_format);
-            $("#comment_form")[0].reset();
-            $("#comment_list tbody").prepend($('<tr><td>' + comment.message + ' at ' + updated_at + '</td></tr>'));
-            $.toaster({
-                priority: 'info',
-                message: '댓글을 등록했습니다.'
-            });
-        });
-
-        $(".delete-confirm").click(function() {
-            var url = $(this).attr("href");
-            var target = $(this).parent().parent();
-
-            if ( confirm("삭제하시겠습니까?") ) {
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                }).done(function() {
-                    target.remove();
-                    $.toaster({
-                        priority: 'info',
-                        message: '댓글을 삭제했습니다.'
-                    });
-                }).fail(function() {
-                    $.toaster({
-                        priority: 'danger',
-                        message: '댓글 삭제 실패 ㅠ_ㅠ'
-                    });
-                });
-            }
-            return false;
-        });
-    });
-</script>
+<link rel="stylesheet" href="{% static "blog/post_detail.css" %}" />
+<script src="{% static "blog/post_detail.js" %}"></script>
 {% endblock %}
 
 {% block navbar_brand %}
