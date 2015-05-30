@@ -1,5 +1,5 @@
 {% extends "blog/layout.html" %}
-{% load bootstrap3 %}
+{% load bootstrap3 blog_tags %}
 
 {% block extra_script %}
 <style>
@@ -85,8 +85,23 @@
             {{ post.content|linebreaks }}
         </div>
         <div class="panel-footer">
-            by {{ post.author }},
-            수정시간 : {{ post.updated_at }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ post.liked_users.all.count }} 명이 좋아합니다.
+
+                    {% if user.is_authenticated %}
+                        {% if post|is_like_post:user %}
+                            <a href="{% url "blog:post_unlike" post.id %}">좋아요 취소</a>
+                        {% else %}
+                            <a href="{% url "blog:post_like" post.id %}">좋아요</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-sm-6 text-right">
+                    by {{ post.author }},
+                    수정시간 : {{ post.updated_at }}
+                </div>
+            </div>
         </div>
     </div>
 

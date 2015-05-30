@@ -69,6 +69,8 @@ class Post(models.Model):
     # 차후 호환성을 위해 "경도/위도" 순으로 저장토록 한다.
     lnglat = models.CharField(max_length=50, default='', verbose_name=_('lnglat'))
 
+    liked_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_post_set')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -92,6 +94,15 @@ class Post(models.Model):
     def lng(self):
         if self.lnglat:
             return self.lnglat.split(',')[0]
+
+    def is_like(self, user):
+        return self.liked_users.filter(id=user.id).exists()
+
+    def like(self, user):
+        self.liked_users.add(user)
+
+    def unlike(self, user):
+        self.liked_users.remove(user)
 
 
 class Comment(models.Model):
