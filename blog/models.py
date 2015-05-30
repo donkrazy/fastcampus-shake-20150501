@@ -96,13 +96,17 @@ class Post(models.Model):
             return self.lnglat.split(',')[0]
 
     def is_like(self, user):
+        if user.id is None:
+            return False
         return self.liked_users.filter(id=user.id).exists()
 
     def like(self, user):
-        self.liked_users.add(user)
+        if user.id is not None:
+            self.liked_users.add(user)
 
     def unlike(self, user):
-        self.liked_users.remove(user)
+        if user.id is not None:
+            self.liked_users.remove(user)
 
 
 class Comment(models.Model):
