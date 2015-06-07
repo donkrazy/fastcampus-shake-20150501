@@ -197,7 +197,7 @@ CELERYD_CONCURRENCY = 3
 
 
 # TODO : aws console 사이트로부터 키를 발급받아서, 아래에 적용해주세요.
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-AWS_STORAGE_BUCKET_NAME = ''
+AWS_ACCESS_KEY_ID = os.environ.get('SHAKE_AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = os.environ.get('SHAKE_AWS_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('SHAKE_AWS_STORAGE_BUCKET_NAME', '')
 
