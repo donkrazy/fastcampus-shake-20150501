@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.twitter',
     'bootstrap3',
     'debug_toolbar',
+    'storages',
     'blog',
 )
 
@@ -141,6 +142,8 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 
 from django.contrib.messages import constants
 MESSAGE_TAGS = {
@@ -191,4 +194,10 @@ CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_DEFAULT_RATE_LIMIT = '10/s'
 CELERYD_CONCURRENCY = 3
+
+
+# TODO : aws console 사이트로부터 키를 발급받아서, 아래에 적용해주세요.
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_STORAGE_BUCKET_NAME = ''
 
